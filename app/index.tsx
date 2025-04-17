@@ -9,11 +9,11 @@ import {
 } from 'react-native';
 
 const steps = [
-  { count: 5, label: 'things you can see 👀', backgroundColor: '#AED9FF' },
-  { count: 4, label: 'things you can touch 👆', backgroundColor: '#FFD8D8' },
-  { count: 3, label: 'things you can hear 🦻', backgroundColor: '#D6CCE4' },
-  { count: 2, label: 'things you can smell 👃', backgroundColor: '#E5D8FF' },
-  { count: 1, label: 'thing you can taste 👅', backgroundColor: '#B2F1E4' },
+  { count: 5, label: 'things you can see 👀', backgroundColor: '#A7DFFF' },
+  { count: 4, label: 'things you can touch 👆', backgroundColor: '#EAC8C0' },
+  { count: 3, label: 'things you can hear 🦻', backgroundColor: '#CDB4DB' },
+  { count: 2, label: 'things you can smell 👃', backgroundColor: '#B2DAD1' },
+  { count: 1, label: 'thing you can taste 👅', backgroundColor: '#F0EAD6' },
 ];
 
 export default function App() {
@@ -37,18 +37,16 @@ export default function App() {
     if (currentCount > 1) {
       setCurrentCount(currentCount - 1);
     } else {
-      // Animate the final progress bar to 100%
       Animated.timing(progressAnim, {
-        toValue: 1, // Full bar
+        toValue: 1,
         duration: 200,
         useNativeDriver: false,
       }).start(() => {
-        // Only after animation completes, proceed to next step
         const nextStep = stepIndex + 1;
         if (nextStep < steps.length) {
           setStepIndex(nextStep);
           setCurrentCount(steps[nextStep].count);
-          progressAnim.setValue(0); // Reset animation for next step
+          progressAnim.setValue(0); 
         } else {
           console.log('All steps completed');
         }
@@ -67,9 +65,9 @@ export default function App() {
       onPress={handleTap}
     >
       <View style={styles.centerContent}>
-        <Text style={styles.bigNumber}>{currentCount}</Text>
-        <Text style={styles.instructionText}>{currentStep.label}</Text>
-        <View style={styles.progressBarBackground}>
+        <Text style={styles.bigNumber} selectable={false}>{currentCount} </Text>
+        <Text style={styles.instructionText} selectable={false}>{currentStep.label}</Text>
+        <View style={styles.progressBarBackground} selectable={false}>
           <Animated.View
             style={[
               styles.progressBarFill,
@@ -85,9 +83,9 @@ export default function App() {
       </View>
 
       <View style={styles.bottomUI}>
-        <Text style={styles.hintText}>Tap anywhere to count a thing</Text>
+        <Text style={styles.hintText} selectable={false}>Tap anywhere to count a thing</Text>
         <TouchableOpacity onPress={handleReset} style={styles.resetButton}>
-          <Text style={styles.resetText}>🔃 Reset</Text>
+          <Text style={styles.resetText} selectable={false}>🔃 Reset</Text>
         </TouchableOpacity>
       </View>
     </Pressable>
@@ -110,6 +108,7 @@ const styles = StyleSheet.create({
     color: '#000',
     fontWeight: 'bold',
     marginBottom: 10,
+    paddingHorizontal: 30,
   },
   instructionText: {
     fontSize: 40,
@@ -117,19 +116,23 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     marginBottom: 6,
+    paddingHorizontal: 30,
+    paddingVertical: 15,
+    borderRadius: 50,
+    backgroundColor: '#fff',
   },
   progressBarBackground: {
     width: '80%',
     maxWidth: 300,
     height: 20,
-    backgroundColor: '#F0F0F0',
+    backgroundColor: '#D6D9DC',
     borderRadius: 20,
     overflow: 'hidden',
     marginTop: 50,
   },
   progressBarFill: {
     height: '100%',
-    backgroundColor: '#66B2A7',
+    backgroundColor: '#006B6B',
   },
   bottomUI: {
     position: 'absolute',
@@ -143,10 +146,10 @@ const styles = StyleSheet.create({
     marginBottom: 50,
   },
   resetButton: {
-    paddingHorizontal: 14,
-    paddingVertical: 8,
+    paddingHorizontal: 30,
+    paddingVertical: 15,
     backgroundColor: '#000',
-    borderRadius: 8,
+    borderRadius: 50,
   },
   resetText: {
     color: '#fff',
