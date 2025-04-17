@@ -8,11 +8,11 @@ import {
 } from 'react-native';
 
 const steps = [
-  { count: 5, label: 'things you can see' },
-  { count: 4, label: 'things you can touch' },
-  { count: 3, label: 'things you can hear' },
-  { count: 2, label: 'things you can smell' },
-  { count: 1, label: 'thing you can taste' },
+  { count: 5, label: 'things you can see 👀', backgroundColor: '#AED9FF' },
+  { count: 4, label: 'things you can touch 👆', backgroundColor: '#FFD8D8' },
+  { count: 3, label: 'things you can hear 🦻', backgroundColor: '#D6CCE4' },
+  { count: 2, label: 'things you can smell 👃', backgroundColor: '#E5D8FF' },
+  { count: 1, label: 'thing you can taste 👅', backgroundColor: '#B2F1E4' },
 ];
 
 export default function App() {
@@ -45,24 +45,24 @@ export default function App() {
     (currentStep.count - currentCount) / currentStep.count;
 
   return (
-    <Pressable style={styles.container} onPress={handleTap}>
+    <Pressable style={[styles.container, { backgroundColor: currentStep.backgroundColor }]} onPress={handleTap}>
       <View style={styles.centerContent}>
         <Text style={styles.bigNumber}>{currentCount}</Text>
         <Text style={styles.instructionText}>
           {currentStep.label}
         </Text>
-        <Text style={styles.hintText}>Tap anywhere to count a thing</Text>
-      </View>
-
-      <View style={styles.bottomUI}>
         <View style={styles.progressBarBackground}>
           <View
             style={[styles.progressBarFill, { width: `${progress * 100}%` }]}
           />
         </View>
 
+      </View>
+
+      <View style={styles.bottomUI}>
+        <Text style={styles.hintText}>Tap anywhere to count a thing</Text>
         <TouchableOpacity onPress={handleReset} style={styles.resetButton}>
-          <Text style={styles.resetText}>Reset</Text>
+          <Text style={styles.resetText}>🔃 Reset</Text>
         </TouchableOpacity>
       </View>
     </Pressable>
@@ -72,7 +72,6 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#111',
     paddingBottom: 100,
   },
   centerContent: {
@@ -82,49 +81,50 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   bigNumber: {
-    fontSize: 80,
-    color: '#4ade80',
+    fontSize: 100,
+    color: '#000',
     fontWeight: 'bold',
     marginBottom: 10,
   },
   instructionText: {
-    fontSize: 26,
-    color: '#fff',
+    fontSize: 40,
+    color: '#000',
+    fontWeight: 'bold',
     textAlign: 'center',
     marginBottom: 6,
-  },
-  hintText: {
-    fontSize: 14,
-    color: '#888',
-    marginTop: 50,
-  },
-  bottomUI: {
-    position: 'absolute',
-    bottom: 30,
-    width: '100%',
-    alignItems: 'center',
   },
   progressBarBackground: {
     width: '80%',
     maxWidth: 300,
-    height: 10,
-    backgroundColor: '#333',
-    borderRadius: 5,
+    height: 20,
+    backgroundColor: '#F0F0F0',
+    borderRadius: 20,
     overflow: 'hidden',
-    marginBottom: 10,
+    marginTop: 50,
   },
   progressBarFill: {
     height: '100%',
-    backgroundColor: '#4ade80',
+    backgroundColor: '#66B2A7',
+  },
+  bottomUI: {
+    position: 'absolute',
+    bottom: 50,
+    width: '100%',
+    alignItems: 'center',
+  },
+  hintText: {
+    fontSize: 20,
+    color: '#000',
+    marginBottom: 50,
   },
   resetButton: {
     paddingHorizontal: 14,
     paddingVertical: 8,
-    backgroundColor: '#222',
+    backgroundColor: '#000',
     borderRadius: 8,
   },
   resetText: {
-    color: '#ccc',
-    fontSize: 14,
+    color: '#fff',
+    fontSize: 20,
   },
 });
