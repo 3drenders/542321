@@ -105,14 +105,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   progressBarBackground: {
-    width: 400, 
+    width: '80%',
+    maxWidth: 300,
     height: 10,
     backgroundColor: '#333',
     borderRadius: 5,
     overflow: 'hidden',
-    marginBottom: 50,
+    marginBottom: 10,
   },
-  
   progressBarFill: {
     height: '100%',
     backgroundColor: '#4ade80',
