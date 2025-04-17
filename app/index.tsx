@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   View,
   Text,
   StyleSheet,
   Pressable,
   TouchableOpacity,
+  Animated,
 } from 'react-native';
 
 const steps = [
@@ -18,20 +19,40 @@ const steps = [
 export default function App() {
   const [stepIndex, setStepIndex] = useState(0);
   const [currentCount, setCurrentCount] = useState(steps[0].count);
-  const initialCount = steps[stepIndex].count;
+  const progressAnim = useRef(new Animated.Value(0)).current;
+
+  const currentStep = steps[stepIndex];
+  const initialCount = currentStep.count;
+
+  useEffect(() => {
+    const newProgress = (currentStep.count - currentCount) / currentStep.count;
+    Animated.timing(progressAnim, {
+      toValue: newProgress,
+      duration: 200,
+      useNativeDriver: false,
+    }).start();
+  }, [currentCount, stepIndex]);
 
   const handleTap = () => {
     if (currentCount > 1) {
       setCurrentCount(currentCount - 1);
     } else {
-      const nextStep = stepIndex + 1;
-      if (nextStep < steps.length) {
-        setStepIndex(nextStep);
-        setCurrentCount(steps[nextStep].count);
-      } else {
-        // End of all grounding steps
-        console.log('All steps completed');
-      }
+      // Animate the final progress bar to 100%
+      Animated.timing(progressAnim, {
+        toValue: 1, // Full bar
+        duration: 200,
+        useNativeDriver: false,
+      }).start(() => {
+        // Only after animation completes, proceed to next step
+        const nextStep = stepIndex + 1;
+        if (nextStep < steps.length) {
+          setStepIndex(nextStep);
+          setCurrentCount(steps[nextStep].count);
+          progressAnim.setValue(0); // Reset animation for next step
+        } else {
+          console.log('All steps completed');
+        }
+      });
     }
   };
 
@@ -40,23 +61,27 @@ export default function App() {
     setCurrentCount(steps[0].count);
   };
 
-  const currentStep = steps[stepIndex];
-  const progress =
-    (currentStep.count - currentCount) / currentStep.count;
-
   return (
-    <Pressable style={[styles.container, { backgroundColor: currentStep.backgroundColor }]} onPress={handleTap}>
+    <Pressable
+      style={[styles.container, { backgroundColor: currentStep.backgroundColor }]}
+      onPress={handleTap}
+    >
       <View style={styles.centerContent}>
         <Text style={styles.bigNumber}>{currentCount}</Text>
-        <Text style={styles.instructionText}>
-          {currentStep.label}
-        </Text>
+        <Text style={styles.instructionText}>{currentStep.label}</Text>
         <View style={styles.progressBarBackground}>
-          <View
-            style={[styles.progressBarFill, { width: `${progress * 100}%` }]}
+          <Animated.View
+            style={[
+              styles.progressBarFill,
+              {
+                width: progressAnim.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: ['0%', '100%'],
+                }),
+              },
+            ]}
           />
         </View>
-
       </View>
 
       <View style={styles.bottomUI}>
