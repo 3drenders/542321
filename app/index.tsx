@@ -54,7 +54,7 @@ export default function App() {
     }
   };
 
-  const handleReset = () => {
+  const handleReset = (e) => {
     setStepIndex(0);
     setCurrentCount(steps[0].count);
   };
@@ -65,6 +65,7 @@ export default function App() {
       onPress={handleTap}
     >
       <View style={styles.centerContent}>
+        <Text style={styles.instructionText} selectable={false}>Name</Text>
         <Text style={styles.bigNumber} selectable={false}>{currentCount} </Text>
         <Text style={styles.instructionText} selectable={false}>{currentStep.label}</Text>
         <View style={styles.progressBarBackground} selectable={false}>
@@ -84,9 +85,11 @@ export default function App() {
 
       <View style={styles.bottomUI}>
         <Text style={styles.hintText} selectable={false}>Tap anywhere to count a thing</Text>
-        <TouchableOpacity onPress={handleReset} style={styles.resetButton}>
-          <Text style={styles.resetText} selectable={false}>🔃 Reset</Text>
+        { currentCount !== 5 && (
+            <TouchableOpacity onPress={handleReset} style={styles.resetButton}  >
+          <Text style={styles.resetText} selectable={false}>Restart</Text>
         </TouchableOpacity>
+        )}
       </View>
     </Pressable>
   );
@@ -106,20 +109,19 @@ const styles = StyleSheet.create({
   bigNumber: {
     fontSize: 100,
     color: '#000',
-    fontWeight: 'bold',
+    fontWeight: 'medium',
     marginBottom: 10,
     paddingHorizontal: 30,
+    textAlign: 'center',
   },
   instructionText: {
     fontSize: 40,
     color: '#000',
-    fontWeight: 'bold',
+    fontWeight: 'medium',
     textAlign: 'center',
     marginBottom: 6,
     paddingHorizontal: 30,
     paddingVertical: 15,
-    borderRadius: 50,
-    backgroundColor: '#fff',
   },
   progressBarBackground: {
     width: '80%',
@@ -148,11 +150,11 @@ const styles = StyleSheet.create({
   resetButton: {
     paddingHorizontal: 30,
     paddingVertical: 15,
-    backgroundColor: '#000',
+    backgroundColor: '#D6C58E',
     borderRadius: 50,
   },
   resetText: {
-    color: '#fff',
+    color: '#000',
     fontSize: 20,
   },
 });
