@@ -26,7 +26,7 @@ const adjustColor = (hex, factor = 0.85) => {
   return `rgb(${r}, ${g}, ${b})`;
 };
 
-export default function App() {      
+export default function App() {
   const [fontsLoaded] = useFonts({
     Quicksand_400Regular,
     Quicksand_600SemiBold,
@@ -43,21 +43,17 @@ export default function App() {
   const countFadeAnim = useRef(new Animated.Value(1)).current;
   const progressAnim = useRef(new Animated.Value(0)).current;
 
-  const currentStep = steps[stepIndex];
-  const visibleStep = steps[visibleStepIndex];
-
   useEffect(() => {
     const subscription = AppState.addEventListener('change', (nextAppState) => {
       if (nextAppState === 'inactive' || nextAppState === 'background') {
         handleReset();
       }
     });
-  
     return () => subscription.remove();
   }, []);
 
   useEffect(() => {
-    const newProgress = (currentStep.count - currentCount) / currentStep.count;
+    const newProgress = (steps[stepIndex].count - currentCount) / steps[stepIndex].count;
     Animated.timing(progressAnim, {
       toValue: newProgress,
       duration: 200,
@@ -99,7 +95,6 @@ export default function App() {
       setPrevColor(steps[nextStep].backgroundColor);
       setVisibleStepIndex(nextStep);
       setVisibleCount(steps[nextStep].count);
-
       setStepIndex(nextStep);
       setCurrentCount(steps[nextStep].count);
       progressAnim.setValue(0);
@@ -140,7 +135,7 @@ export default function App() {
     outputRange: [prevColor, steps[stepIndex].backgroundColor],
   });
 
-  const resetColor = adjustColor(steps[stepIndex].backgroundColor);
+  const resetColor = adjustColor(steps[visibleStepIndex].backgroundColor);
 
   const renderLabelWithBoldLastWord = (label) => {
     const words = label.trim().split(' ');
@@ -167,7 +162,7 @@ export default function App() {
             {visibleCount}
           </Animated.Text>
           <Animated.View>
-            {renderLabelWithBoldLastWord(visibleStep.label)}
+            {renderLabelWithBoldLastWord(steps[visibleStepIndex].label)}
           </Animated.View>
           <View style={styles.progressBarBackground}>
             <Animated.View
